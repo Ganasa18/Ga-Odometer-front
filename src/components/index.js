@@ -1,2 +1,3 @@
 import IconComponent from "./Icon";
-export { IconComponent };
+import Sidebar from "./Sidebar";
+export { IconComponent, Sidebar };

@@ -3,7 +3,7 @@ import React from "react";
 import { Sidebar } from "../../components";
 const { Content } = Layout;
 
-const Home = () => {
+const Report = () => {
   return (
     <>
       <Breadcrumb
@@ -19,14 +19,10 @@ const Home = () => {
           padding: 24,
           minHeight: 360,
         }}>
-        <h1>Home Page</h1>
+        <h1>Report Page</h1>
       </div>
     </>
   );
 };
 
-// const Home = () => {
-//   return <Sidebar page={<MainContent />} />;
-// };
-
-export default Home;
+export default Report;
