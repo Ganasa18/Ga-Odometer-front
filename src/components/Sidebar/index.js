@@ -1,15 +1,21 @@
 import {
-  DesktopOutlined,
-  FileOutlined,
+  DownOutlined,
+  SmileOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu } from "antd";
+import { Button, Layout, Menu, Dropdown, Space, Avatar } from "antd";
 import React, { useState } from "react";
 import { IconComponent } from "../../components";
 import { Link } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import Router from "../../router/Router";
+
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+
+const userName = cookies.get("username");
+
 const { Header, Content, Footer, Sider } = Layout;
 
 // function getItem(label, key, icon, children) {
@@ -47,6 +53,38 @@ const Sidebar = ({ page }) => {
     setCurrent(e.key);
   };
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  function getFirstLetter(string) {
+    var matches = string.match(/\b(\w)/g);
+    var acronym = matches.join("").toUpperCase();
+    return acronym;
+  }
+
+  const clickTopbar = ({ key }) => {
+    if (key === "1") return alert("profile");
+    if (key === "2") return alert("logout");
+  };
+
+  const menu = (
+    <Menu
+      onClick={clickTopbar}
+      items={[
+        {
+          key: "1",
+          label: "Profile",
+        },
+        {
+          key: "2",
+          danger: true,
+          label: "Log Out",
+        },
+      ]}
+    />
+  );
+
   return (
     <BrowserRouter>
       <Layout
@@ -76,7 +114,7 @@ const Sidebar = ({ page }) => {
               <Link to="/" />
             </Menu.Item>
             <Menu.Item key="2">
-              <IconComponent name={"ant-design:dashboard-filled"} />
+              <IconComponent name={"bxs:report"} />
               <span>Report</span>
               <Link to="/report" />
             </Menu.Item>
@@ -96,19 +134,32 @@ const Sidebar = ({ page }) => {
             style={{
               padding: 0,
             }}>
-            <Button
-              type="text"
-              onClick={onCollapse}
-              style={{
-                marginBottom: 16,
-                color: "white",
-              }}>
-              {collapsed ? (
-                <MenuUnfoldOutlined style={{ fontSize: 20 }} />
-              ) : (
-                <MenuFoldOutlined style={{ fontSize: 20 }} />
-              )}
-            </Button>
+            <Space>
+              <Button
+                type="text"
+                onClick={onCollapse}
+                style={{
+                  marginBottom: 16,
+                  color: "white",
+                }}>
+                {collapsed ? (
+                  <MenuUnfoldOutlined style={{ fontSize: 20 }} />
+                ) : (
+                  <MenuFoldOutlined style={{ fontSize: 20 }} />
+                )}
+              </Button>
+            </Space>
+            <Space style={{ float: "right", marginRight: "20px" }}>
+              <Avatar>{getFirstLetter(userName)}</Avatar>
+              <Dropdown overlay={menu}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    {capitalizeFirstLetter(userName)}
+                    <DownOutlined />
+                  </Space>
+                </a>
+              </Dropdown>
+            </Space>
           </Header>
           <Content
             style={{

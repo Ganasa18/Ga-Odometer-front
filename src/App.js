@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { Home, LoginPage } from "./pages";
 import { BrowserRouter } from "react-router-dom";
 import Router from "./router/Router";
+import { Provider } from "react-redux";
+import store from "./redux/";
 import { Sidebar } from "./components";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
@@ -15,7 +17,9 @@ function App() {
       {/* <BrowserRouter>
         <Router />
       </BrowserRouter> */}
-      {!authToken ? <LoginPage /> : <Sidebar />}
+      <Provider store={store}>
+        {!authToken ? <LoginPage /> : <Sidebar />}
+      </Provider>
       {/* <LoginPage /> */}
     </>
   );
