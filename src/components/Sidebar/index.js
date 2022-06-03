@@ -1,19 +1,18 @@
 import {
   DownOutlined,
-  SmileOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, Dropdown, Space, Avatar } from "antd";
+import { Avatar, Button, Dropdown, Layout, Menu, Space } from "antd";
 import React, { useState } from "react";
-import { IconComponent } from "../../components";
-import { Link } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
-import Router from "../../router/Router";
-
+import { BrowserRouter, Link } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { IconComponent } from "../../components";
+import Router from "../../router/Router";
+import "./style.less";
+import logoOpen from "../../assets/side-open.svg";
+import logoClose from "../../assets/side-close.svg";
 const cookies = new Cookies();
-
 const userName = cookies.get("username");
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -42,7 +41,7 @@ const { Header, Content, Footer, Sider } = Layout;
 //   { label: "item 2", key: "item-2" }, // which is required
 // ];
 
-const Sidebar = ({ page }) => {
+const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [current, setCurrent] = useState("1");
   const onCollapse = () => {
@@ -65,7 +64,7 @@ const Sidebar = ({ page }) => {
 
   const clickTopbar = ({ key }) => {
     if (key === "1") return alert("profile");
-    if (key === "2") return alert("logout");
+    if (key === "2") return;
   };
 
   const menu = (
@@ -85,32 +84,53 @@ const Sidebar = ({ page }) => {
     />
   );
 
+  const handleLogOut = () => {
+    cookies.remove("token", { path: "/" });
+    cookies.remove("username", { path: "/" });
+
+    setTimeout(() => {
+      window.location.assign("/");
+    }, 1500);
+  };
+
   return (
     <BrowserRouter>
       <Layout
         style={{
           minHeight: "100vh",
         }}>
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div
-            className="logo"
-            style={{
-              width: 100,
-              height: 100,
-              color: "white",
-              margin: "auto",
-            }}>
-            Logo
+        <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
+          <div className="logo">
+            {collapsed ? (
+              <img
+                className="logo-img"
+                src={logoClose}
+                alt="Logo"
+                style={{
+                  width: 40,
+                  height: 40,
+                  marginLeft: "20px",
+                  marginTop: "20px",
+                }}
+              />
+            ) : (
+              <img
+                className="logo-img"
+                src={logoOpen}
+                alt="Logo"
+                style={{ marginTop: "20px" }}
+              />
+            )}
           </div>
 
           <Menu
             onClick={onClick}
-            theme="dark"
+            theme="light"
             defaultSelectedKeys={[current]}
             mode="inline">
             <Menu.Item key="1">
               <IconComponent name={"ant-design:dashboard-filled"} />
-              <span>Home</span>
+              <span>Dashboard</span>
               <Link to="/" />
             </Menu.Item>
             <Menu.Item key="2">
@@ -153,7 +173,7 @@ const Sidebar = ({ page }) => {
               <Avatar>{getFirstLetter(userName)}</Avatar>
               <Dropdown overlay={menu}>
                 <a onClick={(e) => e.preventDefault()}>
-                  <Space>
+                  <Space className="labelName">
                     {capitalizeFirstLetter(userName)}
                     <DownOutlined />
                   </Space>
@@ -167,8 +187,6 @@ const Sidebar = ({ page }) => {
             }}>
             <Router />
           </Content>
-
-          {/* {page} */}
         </Layout>
       </Layout>
     </BrowserRouter>
