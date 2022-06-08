@@ -10,8 +10,7 @@ const Home = () => {
         style={{
           margin: "16px 0",
         }}>
-        <Breadcrumb.Item>User</Breadcrumb.Item>
-        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+        <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
       </Breadcrumb>
       <div
         className="site-layout-background"
@@ -24,9 +23,5 @@ const Home = () => {
     </>
   );
 };
-
-// const Home = () => {
-//   return <Sidebar page={<MainContent />} />;
-// };
 
 export default Home;

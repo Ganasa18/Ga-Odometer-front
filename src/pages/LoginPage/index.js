@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./style.less";
 import useForm from "../../utils/useForm";
 import { setToken } from "../../redux/action";
+import { Gap } from "../../components";
 
 const LoginPage = () => {
   // let navigate = useNavigate();
@@ -27,7 +28,7 @@ const LoginPage = () => {
       <Row>
         <Col span={24} className="container-login">
           <div className="container-card">
-            <img className="logo-img" src={logoIT} alt="Logo" />
+            <img className="logo-img" src={logoIT} alt="Logo" width="300px" />
             <Card bordered={true} className="card-width">
               <h1 className="title-card">Login for GA Department!</h1>
               <br />
@@ -47,6 +48,7 @@ const LoginPage = () => {
                 <Row>
                   <Col span={14} offset={5}>
                     <Form.Item>
+                      <Gap height="50px" />
                       <Button
                         type="submit"
                         className="btn-flat"

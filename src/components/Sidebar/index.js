@@ -3,8 +3,8 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Dropdown, Layout, Menu, Space } from "antd";
-import React, { useState } from "react";
+import { Avatar, Button, Dropdown, Layout, Menu, Space, Grid } from "antd";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { IconComponent } from "../../components";
@@ -14,6 +14,7 @@ import logoOpen from "../../assets/side-open.svg";
 import logoClose from "../../assets/side-close.svg";
 const cookies = new Cookies();
 const userName = cookies.get("username");
+const { useBreakpoint } = Grid;
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -36,20 +37,71 @@ const { Header, Content, Footer, Sider } = Layout;
 //   getItem("Files", "9", <FileOutlined />),
 // ];
 
-// const items = [
-//   { label: "item 1", key: "item-1" }, // remember to pass the key prop
-//   { label: "item 2", key: "item-2" }, // which is required
-// ];
+const items = [
+  {
+    key: 1,
+    label: "Dashboard",
+    icon: <IconComponent name={"ant-design:dashboard-filled"} />,
+    url: "/",
+  },
+  {
+    key: 2,
+    label: "Report",
+    icon: <IconComponent name={"bxs:report"} />,
+    url: "/report",
+  },
+  {
+    key: 3,
+    label: "Import Odoo",
+    icon: <IconComponent name={"bxs:report"} />,
+    url: "/import-odoo",
+  },
+  {
+    key: 4,
+    label: "Master Location",
+    icon: <IconComponent name={"bxs:report"} />,
+    url: "/location",
+  },
+  {
+    key: 5,
+    label: "Master Car",
+    icon: <IconComponent name={"bxs:report"} />,
+    url: "/cars",
+  },
+  {
+    key: 6,
+    label: "Master User",
+    icon: <IconComponent name={"bxs:report"} />,
+    url: "/users",
+  },
+  {
+    key: 7,
+    label: "Master Departement",
+    icon: <IconComponent name={"bxs:report"} />,
+    url: "/departement",
+  },
+  {
+    key: 8,
+    label: "Master Area",
+    icon: <IconComponent name={"bxs:report"} />,
+    url: "/area",
+  },
+];
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [current, setCurrent] = useState("1");
+  const [current, setCurrent] = useState(null);
+  const screensCheck = useBreakpoint();
+
+  // console.log(activeItem.key, window.location.pathname, current);
+
   const onCollapse = () => {
     setCollapsed((prevcollapse) => !prevcollapse);
   };
 
   const onClick = (e) => {
-    setCurrent(e.key);
+    const activeItem = items.find((item) => item.key === e.key);
+    setCurrent(activeItem);
   };
 
   function capitalizeFirstLetter(string) {
@@ -64,7 +116,9 @@ const Sidebar = () => {
 
   const clickTopbar = ({ key }) => {
     if (key === "1") return alert("profile");
-    if (key === "2") return;
+    if (key === "2") alert("logout");
+    handleLogOut();
+    return;
   };
 
   const menu = (
@@ -99,7 +153,16 @@ const Sidebar = () => {
         style={{
           minHeight: "100vh",
         }}>
-        <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
+        <Sider
+          breakpoint="lg"
+          {...(screensCheck.xs && { collapsedWidth: "0" })}
+          // collapsedWidth={screensCheck.xs ? "0" : null}
+          className="sidebar-style"
+          theme="light"
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          width={220}>
           <div className="logo">
             {collapsed ? (
               <img
@@ -118,7 +181,12 @@ const Sidebar = () => {
                 className="logo-img"
                 src={logoOpen}
                 alt="Logo"
-                style={{ marginTop: "20px" }}
+                style={{
+                  marginTop: "20px",
+                  marginLeft: "20px",
+                  width: "150px",
+                  height: "60px",
+                }}
               />
             )}
           </div>
@@ -128,21 +196,18 @@ const Sidebar = () => {
             theme="light"
             defaultSelectedKeys={[current]}
             mode="inline">
-            <Menu.Item key="1">
-              <IconComponent name={"ant-design:dashboard-filled"} />
-              <span>Dashboard</span>
-              <Link to="/" />
-            </Menu.Item>
-            <Menu.Item key="2">
-              <IconComponent name={"bxs:report"} />
-              <span>Report</span>
-              <Link to="/report" />
-            </Menu.Item>
+            {items.map((item, index) => (
+              <Menu.Item key={item.key}>
+                {item.icon}
+                <span>{item.label}</span>
+                <Link to={item.url} />
+              </Menu.Item>
+            ))}
           </Menu>
-
-          {/* <Menu
+          {/* 
+          <Menu
             onClick={onClick}
-            theme="dark"
+            theme="light"
             defaultSelectedKeys={[current]}
             mode="inline"
             items={items}

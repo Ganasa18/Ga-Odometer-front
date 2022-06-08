@@ -8,6 +8,10 @@ export const setLoading = (value) => {
   return { type: "SET_LOADING", value };
 };
 
+export const setSelected = (value) => {
+  return { type: "SET_SELECTED", value };
+};
+
 export const setToken = (form) => (dispatch) => {
   const URL = `${endPoint[0].url}${
     endPoint[0].port !== "" ? ":" + endPoint[0].port : ""
