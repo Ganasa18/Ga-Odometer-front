@@ -121,6 +121,7 @@ const Departement = () => {
         <Gap height={"30px"} />
         {/* Card Header */}
         <CardHeader
+          btnFilter={true}
           icon={"fluent:add-12-regular"}
           nameBtn={"Create New"}
           onClickBtn={() => dispatch({ type: "SET_MODAL", value: true })}
@@ -158,6 +159,7 @@ const Departement = () => {
         onClose={() => dispatch({ type: "SET_MODAL", value: false })}
         content={bodyModal(
           dispatch,
+          globalReducer,
           optionArea,
           valueDepartement,
           valueSelected,
@@ -165,12 +167,14 @@ const Departement = () => {
         )}
         widthModal="40%"
       />
+
       <ModalComp
         title="Edit Master Departement"
         show={globalReducer.isModalEdit}
         onClose={() => dispatch({ type: "SET_MODAL_EDIT", value: false })}
         content={bodyModalEdit(
           dispatch,
+          globalReducer,
           optionArea,
           valueDepartement,
           valueSelected,
@@ -183,7 +187,13 @@ const Departement = () => {
 };
 
 // Comp Modal Create
-const bodyModal = (dispatch, optionArea, valueDepartement, valueSelected) => (
+const bodyModal = (
+  dispatch,
+  globalReducer,
+  optionArea,
+  valueDepartement,
+  valueSelected
+) => (
   <>
     <div className="content-wrapper">
       <Form layout="vertical">
@@ -193,11 +203,26 @@ const bodyModal = (dispatch, optionArea, valueDepartement, valueSelected) => (
         <Gap height={"28px"} />
         <Form.Item label="Departement" required>
           <Input
+            style={{
+              ...(globalReducer.isError?.departement_name && {
+                border: "1px solid red",
+              }),
+            }}
             placeholder="Departement Name"
             onChange={(e) =>
               dispatch({ type: "SET_DEPARTEMENT_ADD", value: e.target.value })
             }
           />
+          {/* Validation */}
+
+          {globalReducer.isError?.departement_name && (
+            <>
+              <Gap height={"8px"} />
+              <p style={{ marginLeft: "2px", color: "red" }}>
+                {globalReducer.isError?.departement_name}
+              </p>
+            </>
+          )}
         </Form.Item>
         <Gap height={"80px"} />
         <div className="button-wrapper">
@@ -224,6 +249,7 @@ const bodyModal = (dispatch, optionArea, valueDepartement, valueSelected) => (
 // Comp Modal Edit
 const bodyModalEdit = (
   dispatch,
+  globalReducer,
   optionArea,
   valueDepartement,
   valueSelected,
@@ -238,12 +264,26 @@ const bodyModalEdit = (
         <Gap height={"28px"} />
         <Form.Item label="Departement" required>
           <Input
+            style={{
+              ...(globalReducer.isError?.departement_name && {
+                border: "1px solid red",
+              }),
+            }}
             placeholder="Departement Name"
             value={valueDepartement}
             onChange={(e) =>
               dispatch({ type: "SET_DEPARTEMENT_ADD", value: e.target.value })
             }
           />
+          {/* Validation */}
+          {globalReducer.isError?.departement_name && (
+            <>
+              <Gap height={"8px"} />
+              <p style={{ marginLeft: "2px", color: "red" }}>
+                {globalReducer.isError?.departement_name}
+              </p>
+            </>
+          )}
         </Form.Item>
         <Gap height={"80px"} />
         <div className="button-wrapper">

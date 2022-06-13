@@ -8,6 +8,7 @@ import ButtonComp from "./Button";
 import TableComp from "./TableComp";
 import ModalComp from "./ModalComp";
 import SelectSearchComp from "./SelectSearch";
+import MessageComp from "./MessageComp";
 export {
   IconComponent,
   Sidebar,
@@ -19,4 +20,5 @@ export {
   TableComp,
   ModalComp,
   SelectSearchComp,
+  MessageComp,
 };

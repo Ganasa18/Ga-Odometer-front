@@ -5,7 +5,7 @@ import SearchForm from "../SearchForm";
 import FilterBtn from "../FilterButton";
 import ButtonComp from "../Button";
 
-const CardHeader = ({ nameBtn, onClickBtn, icon }) => {
+const CardHeader = ({ nameBtn, onClickBtn, icon, btnFilter = false }) => {
   return (
     <>
       <Row>
@@ -31,7 +31,7 @@ const CardHeader = ({ nameBtn, onClickBtn, icon }) => {
                 sm={{ order: 2 }}
                 md={{ order: 3 }}
                 lg={{ order: 4 }}>
-                <FilterBtn />
+                {btnFilter == true ? <FilterBtn /> : null}
               </Col>
               <Col
                 span={4}

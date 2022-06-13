@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./style.less";
 import useForm from "../../utils/useForm";
 import { setToken } from "../../redux/action";
-import { Gap } from "../../components";
+import { Gap, MessageComp } from "../../components";
 
 const LoginPage = () => {
   // let navigate = useNavigate();
@@ -18,8 +18,9 @@ const LoginPage = () => {
 
   const loginSubmit = (e) => {
     e.preventDefault();
+
     if (form.username == "" || form.password == "")
-      return alert("please fill form");
+      return MessageComp("Please Fill Form", "warning");
     dispatch(setToken(form));
   };
 

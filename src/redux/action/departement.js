@@ -1,5 +1,6 @@
 import axios from "axios";
 import { endPoint } from "../../assets/config";
+import { MessageComp } from "../../components";
 import { getDataArea } from "./area";
 
 // Get Data
@@ -32,6 +33,8 @@ export const createDepartement = (form, selected) => async (dispatch) => {
     endPoint[0].port !== "" ? ":" + endPoint[0].port : ""
   }/api/v1/departement/`;
 
+  dispatch({ type: "SET_IS_ERROR", value: null });
+
   const data = {
     departement_name: form,
     id_area: parseInt(selected.value),
@@ -40,15 +43,21 @@ export const createDepartement = (form, selected) => async (dispatch) => {
   await axios
     .post(URL, data)
     .then((response) => {
-      alert("success");
       dispatch({ type: "SET_MODAL", value: false });
       dispatch({ type: "SET_DEPARTEMENT_ADD", value: "" });
+      MessageComp("Succsess Create", "success");
       setTimeout(() => {
         dispatch(getDataDepartement());
       }, 2000);
     })
-    .catch((error) => {
-      alert("something wrong ");
+    .catch((err) => {
+      if (err.response.status === 400) {
+        const error = {
+          departement_name: err.response.data.message,
+        };
+        return dispatch({ type: "SET_IS_ERROR", value: error });
+      }
+      MessageComp("Something Wrong", "warning");
     });
 };
 
@@ -58,6 +67,8 @@ export const editDepartement = (form, selected, id) => async (dispatch) => {
     endPoint[0].port !== "" ? ":" + endPoint[0].port : ""
   }/api/v1/departement/${id}`;
 
+  dispatch({ type: "SET_IS_ERROR", value: null });
+
   const data = {
     departement_name: form,
     id_area: parseInt(selected.value),
@@ -65,15 +76,21 @@ export const editDepartement = (form, selected, id) => async (dispatch) => {
   await axios
     .patch(URL, data)
     .then((response) => {
-      alert("success edit");
       dispatch({ type: "SET_MODAL_EDIT", value: false });
       dispatch({ type: "SET_DEPARTEMENT_ADD", value: "" });
       dispatch({ type: "SET_SELECTED", value: [] });
+      MessageComp("Succsess Updated Data", "success");
       setTimeout(() => {
         dispatch(getDataDepartement());
       }, 2000);
     })
-    .catch((error) => {
-      alert("something wrong ");
+    .catch((err) => {
+      if (err.response.status === 400) {
+        const error = {
+          departement_name: err.response.data.message,
+        };
+        return dispatch({ type: "SET_IS_ERROR", value: error });
+      }
+      MessageComp("Something Wrong", "warning");
     });
 };

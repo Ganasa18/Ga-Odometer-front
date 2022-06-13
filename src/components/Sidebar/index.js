@@ -3,7 +3,16 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Dropdown, Layout, Menu, Space, Grid } from "antd";
+import {
+  Avatar,
+  Button,
+  Dropdown,
+  Layout,
+  Menu,
+  Space,
+  Grid,
+  Skeleton,
+} from "antd";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Link } from "react-router-dom";
 import Cookies from "universal-cookie";
@@ -12,86 +21,74 @@ import Router from "../../router/Router";
 import "./style.less";
 import logoOpen from "../../assets/side-open.svg";
 import logoClose from "../../assets/side-close.svg";
+import { useDispatch, useSelector } from "react-redux";
+import Gap from "../Gap";
+import { getMenu } from "../../redux/action";
 const cookies = new Cookies();
 const userName = cookies.get("username");
+const userId = cookies.get("user_id");
 const { useBreakpoint } = Grid;
 
 const { Header, Content, Footer, Sider } = Layout;
 
-// function getItem(label, key, icon, children) {
-//   return {
-//     key,
-//     icon,
-//     children,
-//     label,
-//   };
-// }
-
 // const items = [
-//   getItem(
-//     "Option 1",
-//     "1",
-//     <IconComponent name={"ant-design:dashboard-filled"} />
-//   ),
-//   getItem("Option 2", "2", <DesktopOutlined />),
-//   getItem("Files", "9", <FileOutlined />),
+//   {
+//     key: 1,
+//     label: "Dashboard",
+//     icon: <IconComponent name={"ant-design:dashboard-filled"} />,
+//     url: "/",
+//   },
+//   {
+//     key: 2,
+//     label: "Report",
+//     icon: <IconComponent name={"ant-design:dashboard-filled"} />,
+//     url: "/report",
+//   },
+//   {
+//     key: 3,
+//     label: "Import Odoo",
+//     icon: <IconComponent name={"bxs:report"} />,
+//     url: "/import-odoo",
+//   },
+//   {
+//     key: 4,
+//     label: "Master Location",
+//     icon: <IconComponent name={"bxs:report"} />,
+//     url: "/location",
+//   },
+//   {
+//     key: 5,
+//     label: "Master Car",
+//     icon: <IconComponent name={"bxs:report"} />,
+//     url: "/cars",
+//   },
+//   {
+//     key: 6,
+//     label: "Master User",
+//     icon: <IconComponent name={"bxs:report"} />,
+//     url: "/users",
+//   },
+//   {
+//     key: 7,
+//     label: "Master Departement",
+//     icon: <IconComponent name={"bxs:report"} />,
+//     url: "/departement",
+//   },
+//   {
+//     key: 8,
+//     label: "Master Area",
+//     icon: <IconComponent name={"bxs:report"} />,
+//     url: "/area",
+//   },
 // ];
 
-const items = [
-  {
-    key: 1,
-    label: "Dashboard",
-    icon: <IconComponent name={"ant-design:dashboard-filled"} />,
-    url: "/",
-  },
-  {
-    key: 2,
-    label: "Report",
-    icon: <IconComponent name={"bxs:report"} />,
-    url: "/report",
-  },
-  {
-    key: 3,
-    label: "Import Odoo",
-    icon: <IconComponent name={"bxs:report"} />,
-    url: "/import-odoo",
-  },
-  {
-    key: 4,
-    label: "Master Location",
-    icon: <IconComponent name={"bxs:report"} />,
-    url: "/location",
-  },
-  {
-    key: 5,
-    label: "Master Car",
-    icon: <IconComponent name={"bxs:report"} />,
-    url: "/cars",
-  },
-  {
-    key: 6,
-    label: "Master User",
-    icon: <IconComponent name={"bxs:report"} />,
-    url: "/users",
-  },
-  {
-    key: 7,
-    label: "Master Departement",
-    icon: <IconComponent name={"bxs:report"} />,
-    url: "/departement",
-  },
-  {
-    key: 8,
-    label: "Master Area",
-    icon: <IconComponent name={"bxs:report"} />,
-    url: "/area",
-  },
-];
-
 const Sidebar = () => {
+  const { globalReducer } = useSelector((state) => state);
   const [collapsed, setCollapsed] = useState(false);
   const [current, setCurrent] = useState(null);
+
   const screensCheck = useBreakpoint();
+  const dispatch = useDispatch();
 
   // console.log(activeItem.key, window.location.pathname, current);
 
@@ -100,7 +97,7 @@ const Sidebar = () => {
   };
 
   const onClick = (e) => {
-    const activeItem = items.find((item) => item.key === e.key);
+    const activeItem = globalReducer.menus.find((item) => item.id == e.key);
     setCurrent(activeItem);
   };
 
@@ -146,6 +143,10 @@ const Sidebar = () => {
       window.location.assign("/");
     }, 1500);
   };
+
+  useEffect(() => {
+    dispatch(getMenu(userId));
+  }, []);
 
   return (
     <BrowserRouter>
@@ -196,13 +197,31 @@ const Sidebar = () => {
             theme="light"
             defaultSelectedKeys={[current]}
             mode="inline">
-            {items.map((item, index) => (
-              <Menu.Item key={item.key}>
-                {item.icon}
-                <span>{item.label}</span>
-                <Link to={item.url} />
-              </Menu.Item>
-            ))}
+            {globalReducer.isLoadingMenu ? (
+              <>
+                {globalReducer.menus.map((index) => (
+                  <>
+                    <Skeleton.Input
+                      active
+                      style={{ width: "100%" }}
+                      size="default"
+                      block={true}
+                    />
+                    <Gap height={"10px"} />
+                  </>
+                ))}
+              </>
+            ) : (
+              <>
+                {globalReducer.menus.map((item, index) => (
+                  <Menu.Item key={item.id}>
+                    <IconComponent name={item.menu_icon} />
+                    <span>{item.menu_name}</span>
+                    <Link to={item.menu_url} />
+                  </Menu.Item>
+                ))}
+              </>
+            )}
           </Menu>
           {/* 
           <Menu

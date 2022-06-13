@@ -107,14 +107,14 @@ const Area = () => {
         title="Create Master Area"
         show={globalReducer.isModal}
         onClose={() => dispatch({ type: "SET_MODAL", value: false })}
-        content={bodyModal(dispatch, valueArea)}
+        content={bodyModal(dispatch, valueArea, globalReducer)}
         widthModal="40%"
       />
       <ModalComp
         title="Edit Master Area"
         show={globalReducer.isModalEdit}
         onClose={() => dispatch({ type: "SET_MODAL_EDIT", value: false })}
-        content={bodyModalEdit(dispatch, area, valueArea)}
+        content={bodyModalEdit(dispatch, area, valueArea, globalReducer)}
         widthModal="40%"
       />
     </>
@@ -122,17 +122,31 @@ const Area = () => {
 };
 
 // Comp Modal Create
-const bodyModal = (dispatch, valueArea) => (
+const bodyModal = (dispatch, valueArea, globalReducer) => (
   <>
     <div className="content-wrapper">
       <Form layout="vertical">
         <Form.Item label="Area" required>
           <Input
+            style={{
+              ...(globalReducer.isError?.area_name && {
+                border: "1px solid red",
+              }),
+            }}
             placeholder="Area Name"
             onChange={(e) =>
               dispatch({ type: "SET_AREA_ADD", value: e.target.value })
             }
           />
+          {/* Validation */}
+          {globalReducer.isError && (
+            <>
+              <Gap height={"8px"} />
+              <p style={{ marginLeft: "2px", color: "red" }}>
+                {globalReducer.isError?.area_name}
+              </p>
+            </>
+          )}
         </Form.Item>
         <Gap height={"80px"} />
         <div className="button-wrapper">
@@ -155,18 +169,29 @@ const bodyModal = (dispatch, valueArea) => (
 );
 
 // Comp Modal Edit
-const bodyModalEdit = (dispatch, area, valueArea) => (
+const bodyModalEdit = (dispatch, area, valueArea, globalReducer) => (
   <>
     <div className="content-wrapper">
       <Form layout="vertical">
         <Form.Item label="Area" required>
           <Input
+            style={{
+              ...(globalReducer.isError && { border: "1px solid red" }),
+            }}
             placeholder="Area Name"
             value={valueArea}
             onChange={(e) =>
               dispatch({ type: "SET_AREA_ADD", value: e.target.value })
             }
           />
+          {globalReducer.isError && (
+            <>
+              <Gap height={"8px"} />
+              <p style={{ marginLeft: "2px", color: "red" }}>
+                {globalReducer.isError?.area_name}
+              </p>
+            </>
+          )}
         </Form.Item>
         <Gap height={"80px"} />
         <div className="button-wrapper">

@@ -1,9 +1,13 @@
 const initGlobalState = {
   isLoading: false,
+  isLoadingMenu: false,
   token: "",
   isModal: false,
   isModalEdit: false,
   selectedValue: [],
+  menus: [],
+  isMenuAccess: false,
+  isError: null,
 };
 
 export const globalReducer = (state = initGlobalState, action) => {
@@ -32,6 +36,27 @@ export const globalReducer = (state = initGlobalState, action) => {
       return {
         ...state,
         selectedValue: action.value,
+      };
+    case "SET_MENU":
+      return {
+        ...state,
+        menus: action.value,
+      };
+    case "SET_LOADING_MENU":
+      return {
+        ...state,
+        isLoadingMenu: action.value,
+      };
+    case "SET_MENU_ACCESS":
+      return {
+        ...state,
+        isMenuAccess: action.value,
+      };
+
+    case "SET_IS_ERROR":
+      return {
+        ...state,
+        isError: action.value,
       };
 
     default:
