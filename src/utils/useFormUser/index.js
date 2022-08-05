@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const useForm = (initialValue) => {
+const useFormUser = (initialValue, dispatch) => {
   const [form, setForm] = useState(initialValue);
   return [
     form,
@@ -9,13 +9,13 @@ const useForm = (initialValue) => {
         return setForm(initialValue);
       }
       setForm({ ...form, [formType]: formValue });
-      // dispatch({
-      //   type: "SET_USERS_CREATE",
-      //   value: { ...form, [formType]: formValue },
-      // });
+      dispatch({
+        type: "SET_USERS_CREATE",
+        value: { ...form, [formType]: formValue },
+      });
       return;
     },
   ];
 };
 
-export default useForm;
+export default useFormUser;

@@ -68,6 +68,7 @@ export const getMenu = (userId) => async (dispatch) => {
   await axios
     .get(URL)
     .then((response) => {
+      dispatch(getAllMenu());
       dispatch({ type: "SET_MENU", value: response.data.data.menus });
       setTimeout(() => {
         dispatch({ type: "SET_LOADING_MENU", value: false });
@@ -75,5 +76,19 @@ export const getMenu = (userId) => async (dispatch) => {
     })
     .catch((error) => {
       dispatch({ type: "SET_LOADING_MENU", value: false });
+    });
+};
+
+export const getAllMenu = () => async (dispatch) => {
+  const URL = `${endPoint[0].url}${
+    endPoint[0].port !== "" ? ":" + endPoint[0].port : ""
+  }/api/v1/menu`;
+  await axios
+    .get(URL)
+    .then((response) => {
+      dispatch({ type: "SET_ALL_MENU", value: response.data.data.menus });
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };

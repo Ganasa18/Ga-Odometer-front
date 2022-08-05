@@ -9,6 +9,8 @@ import TableComp from "./TableComp";
 import ModalComp from "./ModalComp";
 import SelectSearchComp from "./SelectSearch";
 import MessageComp from "./MessageComp";
+import Loading from "./Loading";
+import IconExpand from "./IconExpand";
 export {
   IconComponent,
   Sidebar,
@@ -21,4 +23,6 @@ export {
   ModalComp,
   SelectSearchComp,
   MessageComp,
+  Loading,
+  IconExpand,
 };

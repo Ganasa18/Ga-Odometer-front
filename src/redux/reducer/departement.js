@@ -1,6 +1,7 @@
 const initDepartement = {
   departement: [],
   departementCreate: "",
+  isModalFilterDepartement: false,
 };
 
 export const departementReducer = (state = initDepartement, action) => {
@@ -14,6 +15,11 @@ export const departementReducer = (state = initDepartement, action) => {
       return {
         ...state,
         areaCreate: action.value,
+      };
+    case "SET_DEPARTEMENT_FILTER":
+      return {
+        ...state,
+        isModalFilterDepartement: action.value,
       };
 
     default:

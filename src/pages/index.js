@@ -5,4 +5,16 @@ import Area from "./Area";
 import Departement from "./Departement";
 import User from "./User";
 import NotFound from "./NotFound";
-export { LoginPage, Home, Report, Area, Departement, User, NotFound };
+import Cars from "./Cars";
+import Location from "./Location";
+export {
+  LoginPage,
+  Home,
+  Report,
+  Area,
+  Departement,
+  User,
+  Cars,
+  NotFound,
+  Location,
+};

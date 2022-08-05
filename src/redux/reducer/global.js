@@ -1,4 +1,5 @@
 const initGlobalState = {
+  isLoadingPage: false,
   isLoading: false,
   isLoadingMenu: false,
   token: "",
@@ -6,8 +7,10 @@ const initGlobalState = {
   isModalEdit: false,
   selectedValue: [],
   menus: [],
+  allMenus: [],
   isMenuAccess: false,
   isError: null,
+  isTagFilter: null,
 };
 
 export const globalReducer = (state = initGlobalState, action) => {
@@ -42,10 +45,20 @@ export const globalReducer = (state = initGlobalState, action) => {
         ...state,
         menus: action.value,
       };
+    case "SET_ALL_MENU":
+      return {
+        ...state,
+        allMenus: action.value,
+      };
     case "SET_LOADING_MENU":
       return {
         ...state,
         isLoadingMenu: action.value,
+      };
+    case "SET_LOADING_PAGE":
+      return {
+        ...state,
+        isLoadingPage: action.value,
       };
     case "SET_MENU_ACCESS":
       return {
@@ -57,6 +70,12 @@ export const globalReducer = (state = initGlobalState, action) => {
       return {
         ...state,
         isError: action.value,
+      };
+
+    case "SET_TAG_FILTER":
+      return {
+        ...state,
+        isTagFilter: action.value,
       };
 
     default:

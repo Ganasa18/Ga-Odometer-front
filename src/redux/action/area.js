@@ -1,6 +1,7 @@
 import axios from "axios";
 import { endPoint } from "../../assets/config";
 import { MessageComp } from "../../components";
+import filterByValue from "../../utils/useFilter";
 
 export const getDataArea = () => async (dispatch) => {
   dispatch({ type: "SET_LOADING", value: true });
@@ -17,6 +18,7 @@ export const getDataArea = () => async (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
+      dispatch({ type: "SET_LOADING", value: false });
     });
 };
 
@@ -96,6 +98,15 @@ export const editArea = (form, id) => async (dispatch) => {
     });
 };
 
-export const searchArea = (value) => async (dispatch) => {
-  console.log(value);
+export const searchArea = (value, areaData) => async (dispatch) => {
+  dispatch({ type: "SET_LOADING", value: true });
+  setTimeout(() => {
+    if (value.length <= 0) {
+      dispatch(getDataArea());
+      return;
+    }
+    let searchRequest = filterByValue(areaData, value);
+    dispatch({ type: "SET_AREA", value: searchRequest });
+    dispatch({ type: "SET_LOADING", value: false });
+  }, 3000);
 };

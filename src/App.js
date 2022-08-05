@@ -5,8 +5,9 @@ import { BrowserRouter } from "react-router-dom";
 import Router from "./router/Router";
 import { Provider } from "react-redux";
 import store from "./redux/";
-import { Sidebar } from "./components";
+import { Loading, Sidebar } from "./components";
 import Cookies from "universal-cookie";
+import { useSelector } from "react-redux";
 const cookies = new Cookies();
 
 const authToken = cookies.get("token");
@@ -19,6 +20,7 @@ function App() {
       </BrowserRouter> */}
       <Provider store={store}>
         {!authToken ? <LoginPage /> : <Sidebar />}
+        {/* {isLoadingPage && <Loading />} */}
       </Provider>
       {/* <LoginPage /> */}
     </>

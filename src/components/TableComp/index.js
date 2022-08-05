@@ -5,7 +5,7 @@ import axios from "axios";
 import "./style.less";
 import { useDispatch, useSelector } from "react-redux";
 
-const TableComp = ({ columns, data }) => {
+const TableComp = ({ columns, data, ...restProps }) => {
   const { globalReducer } = useSelector((state) => state);
 
   // const columns = [
@@ -59,6 +59,7 @@ const TableComp = ({ columns, data }) => {
           pageSizeOptions: ["5", "10", "20", "30"],
         }}
         loading={globalReducer.isLoading}
+        {...restProps}
       />
     </>
   );

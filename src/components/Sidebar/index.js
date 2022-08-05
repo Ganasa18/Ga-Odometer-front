@@ -24,6 +24,7 @@ import logoClose from "../../assets/side-close.svg";
 import { useDispatch, useSelector } from "react-redux";
 import Gap from "../Gap";
 import { getMenu } from "../../redux/action";
+import { Loading } from "../../components";
 const cookies = new Cookies();
 const userName = cookies.get("username");
 const userId = cookies.get("user_id");
@@ -214,7 +215,7 @@ const Sidebar = () => {
             ) : (
               <>
                 {globalReducer.menus.map((item, index) => (
-                  <Menu.Item key={item.id}>
+                  <Menu.Item key={index}>
                     <IconComponent name={item.menu_icon} />
                     <span>{item.menu_name}</span>
                     <Link to={item.menu_url} />
@@ -269,6 +270,11 @@ const Sidebar = () => {
             style={{
               margin: "0 16px",
             }}>
+            {globalReducer.isLoadingPage && (
+              <div className="overlay">
+                <Loading />
+              </div>
+            )}
             <Router />
           </Content>
         </Layout>

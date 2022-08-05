@@ -12,9 +12,12 @@ const ModalComp = ({ show, onClose, title, content, widthModal }) => {
         style={{ width: widthModal }}
         className="modal-content"
         onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h1>{title}</h1>
-        </div>
+        {title && (
+          <div className="modal-header">
+            <h1>{title}</h1>
+          </div>
+        )}
+
         <div className="modal-body">{content}</div>
         <div className="modal-footer"></div>
       </div>

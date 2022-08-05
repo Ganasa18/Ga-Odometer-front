@@ -8,7 +8,12 @@ import {
   ModalComp,
   TableComp,
 } from "../../components";
-import { createArea, editArea, getDataArea } from "../../redux/action/area";
+import {
+  createArea,
+  editArea,
+  getDataArea,
+  searchArea,
+} from "../../redux/action/area";
 import "./style.less";
 
 const Area = () => {
@@ -78,6 +83,9 @@ const Area = () => {
           icon={"fluent:add-12-regular"}
           nameBtn={"Create New"}
           onClickBtn={() => dispatch({ type: "SET_MODAL", value: true })}
+          onSearch={(e) =>
+            dispatch(searchArea(e.target.value, areaReducer.area))
+          }
         />
         <Gap height={"40px"} />
         {/* Table */}

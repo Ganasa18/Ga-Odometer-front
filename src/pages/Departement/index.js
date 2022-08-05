@@ -22,7 +22,10 @@ import {
 import {
   createDepartement,
   editDepartement,
+  filterDepartement,
+  getDataArea,
   getDataDepartement,
+  searchDepartement,
 } from "../../redux/action";
 import "./style.less";
 
@@ -36,6 +39,7 @@ const Departement = () => {
   const areaData = areaReducer.area;
   const valueDepartement = departementReducer.areaCreate;
   const valueSelected = globalReducer.selectedValue;
+  const filterSelect = globalReducer.isTagFilter;
 
   const handleAreaData = () => {
     const newArr = areaData.map((item) => ({
@@ -94,6 +98,7 @@ const Departement = () => {
 
   useEffect(() => {
     dispatch(getDataDepartement());
+    dispatch(getDataArea());
     handleAreaData();
   }, []);
 
@@ -122,11 +127,22 @@ const Departement = () => {
         {/* Card Header */}
         <CardHeader
           btnFilter={true}
+          onClickFilter={() =>
+            dispatch({ type: "SET_DEPARTEMENT_FILTER", value: true })
+          }
           icon={"fluent:add-12-regular"}
           nameBtn={"Create New"}
           onClickBtn={() => dispatch({ type: "SET_MODAL", value: true })}
+          onSearch={(e) =>
+            dispatch(
+              searchDepartement(e.target.value, departementReducer.departement)
+            )
+          }
         />
-        <Gap height={"40px"} />
+        <Gap height={"15px"} />
+        {filterSelect?.departement && (
+          <p>{`Filter for “${filterSelect?.departement}”`}</p>
+        )}
         {/* Table */}
         <Row>
           <Col span={24} order={4}>
@@ -181,6 +197,21 @@ const Departement = () => {
           departement
         )}
         widthModal="40%"
+      />
+
+      <ModalComp
+        title="Filter Departement"
+        show={departementReducer.isModalFilterDepartement}
+        onClose={() =>
+          dispatch({ type: "SET_DEPARTEMENT_FILTER", value: false })
+        }
+        content={bodyModalFilter(
+          dispatch,
+          optionArea,
+          globalReducer,
+          valueSelected
+        )}
+        widthModal="25%"
       />
     </>
   );
@@ -307,6 +338,37 @@ const bodyModalEdit = (
                   departement[0].id
                 )
               )
+            }
+          />
+        </div>
+      </Form>
+    </div>
+  </>
+);
+
+const bodyModalFilter = (dispatch, optionArea, valueSelected) => (
+  <>
+    <div className="content-wrapper">
+      <Form layout="vertical">
+        <Form.Item label="Area" required>
+          <SelectSearchComp option={optionArea} />
+        </Form.Item>
+        <Gap height={"80px"} />
+        <div className="button-wrapper">
+          <ButtonComp
+            btnstyle="btn-danger"
+            name="Cancel"
+            style={{ width: "30%" }}
+            onClickBtn={() =>
+              dispatch({ type: "SET_DEPARTEMENT_FILTER", value: false })
+            }
+          />
+          <Gap width={"80px"} />
+          <ButtonComp
+            name="Filter"
+            style={{ width: "30%" }}
+            onClickBtn={() =>
+              dispatch(filterDepartement(valueSelected.selectedValue))
             }
           />
         </div>
